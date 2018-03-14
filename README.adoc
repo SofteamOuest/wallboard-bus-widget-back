@@ -17,7 +17,7 @@ TODO
 [source]
 ----
 pip install --no-cache-dir -r requirements.txt
-python api.py
+python wallbaoard_tan_back/api.py
 ----
 
 == Run with docker
@@ -27,5 +27,5 @@ python api.py
 docker build -t wallboard-tan-back .
 docker run -p 5000:5000 -it --rm wallboard-tan-back
 
-curl -i http://localhost:5000
+curl -i http://localhost:5000/api
 ----
