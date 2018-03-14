@@ -1,10 +1,12 @@
 = Tan API Proxy Server
 
 "Smart" proxy server for open.tan.fr APIs
+
 * cross domain requests
 * data caching and consolidation
 
 Examples:
+
 * http://open.tan.fr/ewp/horairesarret.json/IDNA/4/1
 * http://open_preprod.tan.fr/ewp/tempsattente.json/IDNA
 
