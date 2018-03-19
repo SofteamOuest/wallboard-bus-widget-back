@@ -2,23 +2,18 @@
 
 "Smart" proxy server for open.tan.fr APIs
 
-* cross domain requests
-* data caching and consolidation
-
-Examples:
-
-* http://open.tan.fr/ewp/horairesarret.json/IDNA/4/1
-* http://open_preprod.tan.fr/ewp/tempsattente.json/IDNA
+* Allow cross domain requests
+* Data consolidation
 
 == Run with python
-
-TODO
 
 [source]
 ----
 pip install --no-cache-dir -r requirements.txt
-python wallbaoard_tan_back/api.py
+python api.py
 ----
+
+This should serve the api at http://localhost:5000/
 
 == Run with docker
 
@@ -26,6 +21,43 @@ python wallbaoard_tan_back/api.py
 ----
 docker build -t wallboard-tan-back .
 docker run -p 5000:5000 -it --rm wallboard-tan-back
-
-curl -i http://localhost:5000/api
 ----
+
+== Example requests
+
+[source]
+----
+curl -i http://localhost:5000/theoretical?stop=IDNA&line=4&line=C5
+----
+
+Where:
+
+IDNA:: stop identifier
+4, C5:: line numbers (multiple values accepted)
+
+Returns
+[source]
+----
+[{
+    stop: "IDNA",
+    direction: 1,
+    terminus: "Foch Cathétrale",
+    line: "4",
+    next: 1.5
+},
+{
+    stop: "IDNA",
+    direction: 2,
+    terminus: "Porte de Vertoi",
+    line: "4",
+    next: 6
+}, ... ]
+----
+
+== Source data
+
+Examples:
+
+* http://open.tan.fr/ewp/horairesarret.json/IDNA/4/1
+* http://open_preprod.tan.fr/ewp/tempsattente.json/IDNA
+

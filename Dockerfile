@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 EXPOSE 5000
-CMD [ "python", "./wallboard_tan_back/api.py" ]
+CMD [ "python", "./api.py" ]
