@@ -3,7 +3,7 @@ import sys
 import bus_api
 
 
-class TestTheoreticalSchedule(unittest.TestCase):
+class TestTheoreticalScheduleResource(unittest.TestCase):
     def setUp(self):
         self.app = bus_api.app.test_client()
 

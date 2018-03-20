@@ -1,6 +1,6 @@
 from flask_restful import Resource
 
 
-class RealTimeSchedule(Resource):
+class RealTimeScheduleResource(Resource):
     def get(self):
         return {}
