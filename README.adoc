@@ -10,7 +10,7 @@
 [source]
 ----
 pip install --no-cache-dir -r requirements.txt
-python api.py
+python bus_api.py
 ----
 
 This should serve the api at http://localhost:5000/
