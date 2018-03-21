@@ -8,11 +8,7 @@ class BusLine:
         self.direction = direction
 
 
-class BusLinePermutation:
-    def __init__(self, stops = (), lines = (), directions = ()):
-        self.__permutations = itertools.product(stops, lines, directions)
-
-    @property
-    def lines(self):
-        for p in self.__permutations:
-            yield BusLine(*p)
+def build_bus_line_combinations(stops=(), lines=(), directions=()):
+    cross_product_combinations = itertools.product(stops, lines, directions)
+    for cpc in cross_product_combinations:
+        yield BusLine(*cpc)
