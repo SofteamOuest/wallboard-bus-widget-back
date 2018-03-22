@@ -1,9 +1,12 @@
-import unittest
+from unittest import TestCase, main
+from unittest.mock import patch, call
 import sys
 import bus_api
+from widget_bus_back.bus_line import BusLine
+from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource
 
 
-class TestTheoreticalScheduleResource(unittest.TestCase):
+class TestTheoreticalScheduleResource(TestCase):
     def setUp(self):
         self.app = bus_api.app.test_client()
 
@@ -15,6 +18,18 @@ class TestTheoreticalScheduleResource(unittest.TestCase):
         response = self.app.get('/theoretical?stop=Aline=1&line&2')
         self.assertFalse('Missing required parameter' in response.get_data().decode(sys.getdefaultencoding()))
 
+    @patch('widget_bus_back.theoretical_schedule.RemoteApi')
+    def test_get_with_three_lines_should_call_remote_api_thrice_times(self, mock_api):
+        # arrange
+        lines = [BusLine('foo', 'bar', i) for i in range(3)]
+
+        # act
+        TheoreticalScheduleResource().fetch_schedules(lines)
+
+        # assert
+        expected_calls = map(lambda x: call().fetch_schedule(x), lines)
+        mock_api.assert_has_calls(list(expected_calls))
+
 
 if __name__ == '__main__':
-    unittest.main()
+    main()

@@ -1,12 +1,16 @@
 from flask_restful import Resource, reqparse
 from multiprocessing.dummy import Pool as ThreadPool
 from json import dumps as json_dumps
+from .remote_api import RemoteApi
 from .bus_line import build_bus_line_combinations
 
 FETCH_PROCESSES = 4
 
 
 class TheoreticalScheduleResource(Resource):
+    def __init__(self):
+        self.remote_api = RemoteApi()
+
     def get(self):
         request_params = parse_request_params()
         bus_lines = build_bus_line_combinations(request_params)
@@ -21,7 +25,7 @@ class TheoreticalScheduleResource(Resource):
         return schedules
 
     def fetch_schedule(self, bus_line):
-        return bus_line
+        return self.remote_api.fetch_schedule(bus_line)
 
 
 def parse_request_params():
