@@ -8,7 +8,7 @@ class BusLine:
         self.direction = direction
 
 
-def build_bus_line_combinations(stops=(), lines=(), directions=()):
-    cross_product_combinations = itertools.product(stops, lines, directions)
+def build_bus_line_combinations(stop=(), line=(), direction=()):
+    cross_product_combinations = itertools.product(stop, line, direction)
     for cpc in cross_product_combinations:
         yield BusLine(*cpc)

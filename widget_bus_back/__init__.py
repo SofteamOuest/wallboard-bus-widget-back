@@ -1,1 +1,1 @@
-__all__ = ['real_time_schedule', 'theoretical_schedule']
+__all__ = ['real_time_schedule.RealTimeScheduleResource', 'theoretical_schedule.TheoreticalScheduleResource']

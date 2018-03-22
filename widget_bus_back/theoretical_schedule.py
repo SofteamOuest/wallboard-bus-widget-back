@@ -13,7 +13,7 @@ class TheoreticalScheduleResource(Resource):
 
     def get(self):
         request_params = parse_request_params()
-        bus_lines = build_bus_line_combinations(request_params)
+        bus_lines = build_bus_line_combinations(**request_params)
         schedules = self.fetch_schedules(bus_lines)
         return to_json(schedules)
 
@@ -25,15 +25,11 @@ class TheoreticalScheduleResource(Resource):
         return schedules
 
     def fetch_schedule(self, bus_line):
-        return self.remote_api.fetch_schedule(bus_line)
+        remote_schedules = self.remote_api.fetch_theoretical_schedule(bus_line)
+        return build_schedule(bus_line, remote_schedules)
 
 
 def parse_request_params():
-    param_dict = parse_request_params_to_dict()
-    return to_params_map(param_dict)
-
-
-def parse_request_params_to_dict():
     parser = reqparse.RequestParser()
     parser.add_argument('stop', action='append', required=True)
     parser.add_argument('line', action='append', required=True)
@@ -41,9 +37,9 @@ def parse_request_params_to_dict():
     return parser.parse_args()
 
 
-def to_params_map(params_dict):
-    return map(lambda x: params_dict[x], ['stop', 'line', 'direction'])
-
-
 def to_json(obj_list):
     return list(map(json_dumps, obj_list))
+
+
+def build_schedule(bus_line, remote_schedules):
+    return bus_line
