@@ -1,5 +1,5 @@
+import unittest
 from datetime import datetime
-from unittest import TestCase, main
 
 import sys
 from unittest.mock import call, patch
@@ -10,7 +10,7 @@ from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource, build_theoretical_schedule, compute_delay
 
 
-class TestTheoreticalScheduleResource(TestCase):
+class TestTheoreticalScheduleResource(unittest.TestCase):
     def setUp(self):
         self.app = bus_api.app.test_client()
 
@@ -74,14 +74,13 @@ class TestTheoreticalScheduleResource(TestCase):
         self.assertEquals(sch.terminus, "Foch - Cathédrale")
         self.assertEquals(sch.next, 18)
 
-    def test_build_theoretical_schedule_when_unavailable_should_return_error(self):
+    @patch.object(RemoteApi, 'fetch_theoretical_schedule', lambda _, __: {})
+    def test_fetch_schedule_when_unavailable_should_return_error(self):
         # arrange
         bus_line = BusLine('foo', 'bar', 1)
-        now = datetime(2018, 1, 1, 14, 0, 0)
-        remote_schedule = {}
 
         # act
-        sch = build_theoretical_schedule(bus_line, now, remote_schedule)
+        sch = TheoreticalScheduleResource().fetch_schedule(bus_line)
 
         # assert
         self.assertTrue(sch.unavailable)
@@ -104,4 +103,4 @@ class TestTheoreticalScheduleResource(TestCase):
 
 
 if __name__ == '__main__':
-    main()
+    unittest.main()
