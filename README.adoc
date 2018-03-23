@@ -23,6 +23,8 @@ docker build -t wallboard-tan-back .
 docker run -p 5000:5000 -it --rm wallboard-tan-back
 ----
 
+This should serve the api at http://localhost:5000/
+
 == Example requests
 
 [source]
@@ -48,16 +50,46 @@ Returns
 {
     stop: "IDNA",
     direction: 2,
-    terminus: "Porte de Vertoi",
+    terminus: "Porte de Vertou",
     line: "4",
     next: 6
 }, ... ]
 ----
 
+== Configure
+
+Configuration can be changed with environment variables
+
+`WIDGET_BUS_API_URL`::
+    By default the preprod API from tan.fr is used
+    (e.g. http://open_preprod.tan.fr) To switch to production environment,
+    set the variable to http://open.tan.fr/ewp
+`WIDGET_BUS_LOG_LEVEL`::
+    Logging level (`DEBUG`, `INFO`, etc.) The default value is `INFO`.
+
+To set the variables before calling the script:
+[source]
+----
+WIDGET_BUS_LOG_LEVEL=DEBUG python bus_api.py
+----
+
+Or with docker
+[source]
+----
+docker run -e "WIDGET_BUS_LOG_LEVEL=DEBUG" ✂
+    -p 5000:5000 -it --rm wallboard-tan-back
+----
+
 == Source data
 
-Examples:
+Some examples URI
+
+Production:
 
 * http://open.tan.fr/ewp/horairesarret.json/IDNA/4/1
+
+Pre-production:
+
+* http://open_preprod.tan.fr/ewp/horairesarret.json/IDNA/4/1
 * http://open_preprod.tan.fr/ewp/tempsattente.json/IDNA
 
