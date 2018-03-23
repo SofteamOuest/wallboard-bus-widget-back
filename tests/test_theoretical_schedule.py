@@ -1,10 +1,12 @@
-from unittest import TestCase, main
-from unittest.mock import patch, call
-import sys
-import bus_api
 from datetime import datetime
-from widget_bus_back.remote_api import RemoteApi
+from unittest import TestCase, main
+
+import sys
+from unittest.mock import call, patch
+
+import bus_api
 from widget_bus_back.bus_line import BusLine
+from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource, build_theoretical_schedule, compute_delay
 
 

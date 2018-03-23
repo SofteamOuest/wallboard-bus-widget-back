@@ -1,3 +1,5 @@
+from json import JSONDecodeError
+
 from flask_restful import Resource, reqparse
 from multiprocessing.dummy import Pool as ThreadPool
 from datetime import datetime
@@ -26,8 +28,11 @@ class TheoreticalScheduleResource(Resource):
         return schedules
 
     def fetch_schedule(self, bus_line):
-        remote_schedules = self.remote_api.fetch_theoretical_schedule(bus_line)
-        return build_theoretical_schedule(bus_line, self.current_time, remote_schedules)
+        try:
+            remote_schedules = self.remote_api.fetch_theoretical_schedule(bus_line)
+            return build_theoretical_schedule(bus_line, self.current_time, remote_schedules)
+        except (KeyError, JSONDecodeError) as e:
+            return BusLineSchedule(bus_line=bus_line, error_message=e.__class__.__name__ + ':' + str(e))
 
 
 def parse_request_params():
@@ -43,19 +48,16 @@ def to_json(obj_list):
 
 
 def build_theoretical_schedule(bus_line, current_time, remote_schedules):
-    try:
-        terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
-        next_arrival = remote_schedules['prochainsHoraires'][0]
-        delay_to_next_arrival = compute_delay(current_time, next_arrival['heure'], next_arrival['passages'][0])
-        return BusLineSchedule(bus_line, terminus, delay_to_next_arrival)
-    except KeyError as e:
-        return BusLineSchedule(bus_line=bus_line, error_message=e.__class__.__name__ + ':' + str(e))
+    terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
+    next_arrival = remote_schedules['prochainsHoraires'][0]
+    delay_to_next_arrival = compute_delay(current_time, next_arrival['heure'], next_arrival['passages'][0])
+    return BusLineSchedule(bus_line, terminus, delay_to_next_arrival)
 
 
 def compute_delay(current_time, next_arrival_hour_string, next_arrival_minute_string):
     next_arrival_hour = extract_hour(next_arrival_hour_string)
     next_arrival_minute = int(next_arrival_minute_string)
-    next_arrival = current_time.replace(hour = next_arrival_hour, minute=next_arrival_minute)
+    next_arrival = current_time.replace(hour = next_arrival_hour, minute=next_arrival_minute, second=0)
 
     delay = next_arrival - current_time
     delay_in_seconds = delay.days * 86400 + delay.seconds
