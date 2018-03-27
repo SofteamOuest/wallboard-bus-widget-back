@@ -10,7 +10,7 @@
 [source]
 ----
 pip install --no-cache-dir -r requirements.txt
-python bus_api.py
+python run.py
 ----
 
 This should serve the api at http://localhost:5000/
@@ -70,7 +70,7 @@ Configuration can be changed with environment variables
 To set the variables before calling the script:
 [source]
 ----
-WIDGET_BUS_LOG_LEVEL=DEBUG python bus_api.py
+WIDGET_BUS_LOG_LEVEL=DEBUG python run.py
 ----
 
 Or with docker

@@ -4,7 +4,7 @@ from datetime import datetime
 import sys
 from unittest.mock import call, patch
 
-import bus_api
+import run
 from widget_bus_back.bus_line import BusLine
 from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource, build_theoretical_schedule, compute_delay
@@ -12,7 +12,7 @@ from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource, bu
 
 class TestTheoreticalScheduleResource(unittest.TestCase):
     def setUp(self):
-        self.app = bus_api.app.test_client()
+        self.app = run.app.test_client()
 
     def test_get_with_no_parameter_should_return_error(self):
         # act
