@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Horaires TAN &#150; &Icirc;le de Nantes</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main id="app">
+        <schedule-item 
+            v-for="busLine in busLines"
+                :bus-line="busLine"
+                :key="busLine.id">
+        </schedule-item>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script type="module">
+        import ScheduleItem from './js/schedule-item.js'
+        import BusLine from './js/bus-line.js'
+        import scheduleService from './js/schedule-service.js'
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                busLines: 
+                    [
+                        ["4", 1],
+                        ["4", 2], 
+                        ["C5", 1],
+                        ["C5", 2]
+                    ]  
+                    .map(lineAndDirection => new BusLine(...lineAndDirection))
+            },
+            mounted() {
+                scheduleService.getSchedule(this.busLines)
+                    .then(schedules => schedules.forEach(
+                                        s => this.busLines
+                                            .filter(b => b.sameAs(s))
+                                            .forEach(b => b.updateWith(s))))
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+[{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "1 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "1 mn 30",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "2 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "5 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "6 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "6 mn 30",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "10 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "11 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "11 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "11 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "16 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "16 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "17 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "20 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "21 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "21 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "26 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "26 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "26 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "29 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "31 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "31 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "35 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "36 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "36 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "39 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "41 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "41 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "45 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "46 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "46 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "48 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "51 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "51 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Quai des Antilles",
+	"infotrafic": false,
+	"temps": "54 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 1,
+	"terminus": "Foch-Cathédrale",
+	"infotrafic": false,
+	"temps": "56 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA1"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Porte de Vertou",
+	"infotrafic": false,
+	"temps": "56 mn",
+	"ligne": {
+		"numLigne": "4",
+		"typeLigne": 2
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+},
+{
+	"sens": 2,
+	"terminus": "Gare SNCF Sud",
+	"infotrafic": false,
+	"temps": "57 mn",
+	"ligne": {
+		"numLigne": "C5",
+		"typeLigne": 3
+	},
+	"arret": {
+		"codeArret": "IDNA2"
+	}
+}]
