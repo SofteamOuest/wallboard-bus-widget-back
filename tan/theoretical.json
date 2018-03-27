@@ -1,0 +1,28 @@
+[{
+    "stop": "IDNA",
+    "direction": 1,
+    "terminus": "Foch Cathétrale",
+    "line": "4",
+    "next": 1.5
+},
+{
+    "stop": "IDNA",
+    "direction": 2,
+    "terminus": "Porte de Vertou",
+    "line": "4",
+    "next": 6
+},
+{
+    "stop": "IDNA",
+    "direction": 1,
+    "terminus": "Gare SNCF sud",
+    "line": "C5",
+    "next": 3
+},
+{
+    "stop": "IDNA",
+    "direction": 2,
+    "terminus": "Quai des Antilles",
+    "line": "C5",
+    "next": 5
+}]
