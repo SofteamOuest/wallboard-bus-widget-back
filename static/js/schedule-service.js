@@ -8,8 +8,9 @@ function getSchedule(busLines) {
 }
 
 const STOP = 'IDNA'
-const API = 'http://127.0.0.1:5000'
+// const API = 'http://127.0.0.1:5000'
 // const API = '/tan/theoretical.json#'
+const API = ''
 
 function getTheoreticalScheduleEndpoint(busLines) {
     let lines = new Set(busLines.map(b => `line=${b.line}`))
