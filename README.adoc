@@ -1,9 +1,9 @@
-= Tan API Proxy Server
+= Wallboard Bus Widget
 
-"Smart" proxy server for open.tan.fr APIs
-
-* Allow cross domain requests
-* Data consolidation
+* VueJS widget that shows incoming bus schedules
+* Python/Flask proxy server for open.tan.fr APIs
+** Enable cross domain requests
+** Data consolidation
 
 == Run with python
 
@@ -13,7 +13,9 @@ pip install --no-cache-dir -r requirements.txt
 python run.py
 ----
 
-This should serve the api at http://localhost:5000/
+This should serve the api at http://127.0.0.1:5000/ and
+the widget at http://127.0.0.1:5000/static/index.html,
+using the built-in dev server.
 
 == Run with docker
 
@@ -23,13 +25,57 @@ docker build -t wallboard-tan-back .
 docker run -p 5000:5000 -it --rm wallboard-tan-back
 ----
 
-This should serve the api at http://localhost:5000/
+This should serve the api at http://127.0.0.1:5000/ and
+the widget at http://127.0.0.1:5000/static/index.html,
+using production grade webserver.
 
-== Example requests
+== Configure
+
+Configuration can be changed with environment variables
+
+`WIDGET_BUS_API_URL`::
+    By default the preprod API from tan.fr is used
+    (e.g. http://open_preprod.tan.fr) To switch to production environment,
+    set the variable to http://open.tan.fr/ewp
+`WIDGET_BUS_LOG_LEVEL`::
+    Logging level (`DEBUG`, `INFO`, etc.) The default value is `INFO`.
+
+To set the variables before calling the script:
+[source]
+----
+WIDGET_BUS_LOG_LEVEL=DEBUG python run.py
+----
+
+Or with docker
+[source]
+----
+docker run -e "WIDGET_BUS_LOG_LEVEL=DEBUG" ✂
+    -p 5000:5000 -it --rm wallboard-tan-back
+----
+
+=== Notes on running dev server under Windows
+
+I ran across some issues, using the built-in dev server
+(werkzeug) under Windows:
+
+* Javascript files are served with `text/plain` mime type,
+which causes some browsers to reject them
+** You have to update the `HKEY_CLASSES_ROOT\.js\Content-Type`
+registry entry to `text/javascript`
+* Server is slow when accessed via `localhost`, because of
+some IPv6 handling mess
+** You have to either edit your IPv6 tables to use IPv4 binding
+for `localhost` :(
+** Or access the server with `127.0.0.1`
+* Threading *has* to be enabled (`threaded=True` in `app.run`)
+
+You do not have those issues with Docker.
+
+== Example API requests
 
 [source]
 ----
-curl -i http://localhost:5000/theoretical?stop=IDNA&line=4&line=C5
+curl -i http://127.0.0.1:5000/theoretical?stop=IDNA&line=4&line=C5
 ----
 
 Where:
@@ -54,30 +100,6 @@ Returns
     line: "4",
     next: 6
 }, ... ]
-----
-
-== Configure
-
-Configuration can be changed with environment variables
-
-`WIDGET_BUS_API_URL`::
-    By default the preprod API from tan.fr is used
-    (e.g. http://open_preprod.tan.fr) To switch to production environment,
-    set the variable to http://open.tan.fr/ewp
-`WIDGET_BUS_LOG_LEVEL`::
-    Logging level (`DEBUG`, `INFO`, etc.) The default value is `INFO`.
-
-To set the variables before calling the script:
-[source]
-----
-WIDGET_BUS_LOG_LEVEL=DEBUG python run.py
-----
-
-Or with docker
-[source]
-----
-docker run -e "WIDGET_BUS_LOG_LEVEL=DEBUG" ✂
-    -p 5000:5000 -it --rm wallboard-tan-back
 ----
 
 == Source data
