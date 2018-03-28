@@ -16,7 +16,7 @@ api.add_resource(RealTimeScheduleResource, '/real-time')
 
 def main():
     configure_logging()
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True, threaded=True)
 
 
 if __name__ == '__main__':
