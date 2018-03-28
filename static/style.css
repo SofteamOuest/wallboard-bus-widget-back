@@ -28,7 +28,7 @@ main {
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-columns: [left-part-start] 1fr [first-col] max-content .5fr [left-part-end right-part-start] .5fr [second-col] max-content 1fr [right-part-end];
+    grid-template-columns: [left-part-start] 1fr [first-col] max-content var(--space-2x) [left-part-end right-part-start] var(--space-2x) [second-col] max-content 1fr [right-part-end];
     grid-template-rows: [top-part-start] 1fr [first-row] max-content var(--space-2x) [second-row] max-content 1fr ;
     overflow: hidden;
 }
@@ -87,14 +87,14 @@ section {
         grid-column: left-part-start/left-part-end; 
         z-index: 0;
         color: var(--background);
-        background: no-repeat bottom left url('img/left.png');
+        background: no-repeat bottom / cover url('img/left.svg');
     }
     main::after {
         content: 'R';
         grid-row: top-part-start/top-part-end;
         grid-column: right-part-start/right-part-end; 
         z-index: 0;
-        background: no-repeat bottom left url('img/right.png') var(--foreground);
+        background: no-repeat bottom / cover url('img/right.svg') var(--foreground);
     }
 header {
     background: var(--accent-3);
