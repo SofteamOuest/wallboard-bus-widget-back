@@ -12,8 +12,8 @@ export default {
         computed: {
             classObject() {
                 return {
-                    soon: 0 < this.busLine.next && this.busLine.next <= 3,
-                    imminent: 0 < this.busLine.next && this.busLine.next <= 1,
+                    soon: 0 <= this.busLine.next && this.busLine.next <= 3,
+                    imminent: 0 <= this.busLine.next && this.busLine.next <= 1,
                     unavailable: this.busLine.unavailable,
                     loading: this.busLine.next < 0
                 }
@@ -21,8 +21,8 @@ export default {
             nextScheduleFormatted() {
                 if (this.busLine.next < 0)
                     return '...'
-                if(this.busLine.next < 2)
-                    return `${Math.floor(this.busLine.next)} min ${this.busLine.next % 1 > .5 ? 30 : ''}`
+                if (this.busLine.next < 1)
+                    return '<1 min'
                 return `${Math.floor(this.busLine.next)} min`
             }
         }
