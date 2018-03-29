@@ -5,7 +5,7 @@ from widget_bus_back.bus_line import BusLine
 from widget_bus_back.remote_api import RemoteApi
 
 
-class TestTheoreticalScheduleResource(unittest.TestCase):
+class TestRemoteApi(unittest.TestCase):
 
     @patch('os.getenv')
     def test_build_theoretical_schedule_url(self, mock_getenv):
