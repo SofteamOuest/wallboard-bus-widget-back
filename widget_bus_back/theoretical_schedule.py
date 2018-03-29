@@ -2,7 +2,8 @@ from json import JSONDecodeError
 
 from flask_restful import Resource, reqparse
 from multiprocessing.dummy import Pool as ThreadPool
-from datetime import datetime
+
+from .local_time import LocalTime
 from .remote_api import RemoteApi
 from .bus_line import build_bus_line_combinations, BusLineSchedule
 
@@ -12,7 +13,8 @@ FETCH_PROCESSES = 4
 class TheoreticalScheduleResource(Resource):
     def __init__(self):
         self.remote_api = RemoteApi()
-        self.current_time = datetime.now()
+        self.local_time = LocalTime()
+        self.current_time = self.local_time.now()
 
     def get(self):
         request_params = parse_request_params()
@@ -30,9 +32,28 @@ class TheoreticalScheduleResource(Resource):
     def fetch_schedule(self, bus_line):
         try:
             remote_schedules = self.remote_api.fetch_theoretical_schedule(bus_line)
-            return build_theoretical_schedule(bus_line, self.current_time, remote_schedules)
+            return self.build_theoretical_schedule(bus_line, remote_schedules)
         except (KeyError, JSONDecodeError) as e:
             return BusLineSchedule(bus_line=bus_line, error_message=e.__class__.__name__ + ':' + str(e))
+
+    def build_theoretical_schedule(self, bus_line, remote_schedules):
+        terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
+        next_arrival = remote_schedules['prochainsHoraires'][0]
+        delay_to_next_arrival = self.compute_delay(next_arrival['heure'], next_arrival['passages'][0])
+        return BusLineSchedule(bus_line, terminus, delay_to_next_arrival)
+
+    def compute_delay(self, next_arrival_hour_string, next_arrival_minute_string):
+        next_arrival_hour = extract_hour(next_arrival_hour_string)
+        next_arrival_minute = int(next_arrival_minute_string)
+        next_arrival = self.current_time.replace(hour=next_arrival_hour, minute=next_arrival_minute, second=0)
+        self.local_time.localize(next_arrival)
+
+        delay = next_arrival - self.current_time
+        delay_in_seconds = delay.days * 86400 + delay.seconds
+        if delay_in_seconds < 0:
+            delay_in_seconds += 86400
+
+        return delay_in_seconds / 60
 
 
 def parse_request_params():
@@ -45,26 +66,6 @@ def parse_request_params():
 
 def to_json(obj_list):
     return list(map(lambda obj: vars(obj), obj_list))
-
-
-def build_theoretical_schedule(bus_line, current_time, remote_schedules):
-    terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
-    next_arrival = remote_schedules['prochainsHoraires'][0]
-    delay_to_next_arrival = compute_delay(current_time, next_arrival['heure'], next_arrival['passages'][0])
-    return BusLineSchedule(bus_line, terminus, delay_to_next_arrival)
-
-
-def compute_delay(current_time, next_arrival_hour_string, next_arrival_minute_string):
-    next_arrival_hour = extract_hour(next_arrival_hour_string)
-    next_arrival_minute = int(next_arrival_minute_string)
-    next_arrival = current_time.replace(hour = next_arrival_hour, minute=next_arrival_minute, second=0)
-
-    delay = next_arrival - current_time
-    delay_in_seconds = delay.days * 86400 + delay.seconds
-    if delay_in_seconds < 0:
-        delay_in_seconds += 86400
-
-    return delay_in_seconds / 60
 
 
 def extract_hour(hour_string):

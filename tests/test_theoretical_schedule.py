@@ -4,10 +4,15 @@ from datetime import datetime
 import sys
 from unittest.mock import call, patch
 
+import pytz
+
 import run
 from widget_bus_back.bus_line import BusLine
+from widget_bus_back.local_time import LocalTime
 from widget_bus_back.remote_api import RemoteApi
-from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource, build_theoretical_schedule, compute_delay
+from widget_bus_back.theoretical_schedule import TheoreticalScheduleResource
+
+PARIS_TIMEZONE = pytz.timezone('Europe/Paris')
 
 
 class TestTheoreticalScheduleResource(unittest.TestCase):
@@ -44,10 +49,10 @@ class TestTheoreticalScheduleResource(unittest.TestCase):
         expected_calls = map(lambda x: call().fetch_theoretical_schedule(x), lines)
         mock_api.assert_has_calls(list(expected_calls), any_order=True)
 
+    @patch.object(LocalTime, 'now', lambda _: PARIS_TIMEZONE.localize(datetime(2018, 1, 1, 14, 0, 0)))
     def test_build_theoretical_schedule_should_compute_next_time(self):
         # arrange
         bus_line = BusLine('foo', 'bar', 1)
-        now = datetime(2018, 1, 1, 14, 0, 0)
         remote_schedule = {
             "ligne": {
                 "directionSens1": "Foch - Cathédrale",
@@ -65,7 +70,7 @@ class TestTheoreticalScheduleResource(unittest.TestCase):
         }
 
         # act
-        sch = build_theoretical_schedule(bus_line, now, remote_schedule)
+        sch = TheoreticalScheduleResource().build_theoretical_schedule(bus_line, remote_schedule)
 
         # assert
         self.assertEquals(sch.line, bus_line.line)
@@ -86,20 +91,25 @@ class TestTheoreticalScheduleResource(unittest.TestCase):
         self.assertTrue(sch.unavailable)
         self.assertTrue(sch.error_message)
 
+    @patch.object(LocalTime, 'now', lambda _: PARIS_TIMEZONE.localize(datetime(2018, 1, 1, 14, 0, 0)))
     def test_compute_delay_in_the_incoming_hour(self):
-        now = datetime(2018, 1, 1, 14, 0, 0)
-        delay = compute_delay(now, '14h', '18')
+        delay = TheoreticalScheduleResource().compute_delay('14h', '18')
         self.assertEquals(delay, 18)
 
+    @patch.object(LocalTime, 'now', lambda _: PARIS_TIMEZONE.localize(datetime(2018, 1, 1, 14, 0, 0)))
     def test_compute_delay_in_the_next_hour(self):
-        now = datetime(2018, 1, 1, 14, 0, 0)
-        delay = compute_delay(now, '15h', '02')
+        delay = TheoreticalScheduleResource().compute_delay('15h', '02')
         self.assertEquals(delay, 62)
 
+    @patch.object(LocalTime, 'now', lambda _: PARIS_TIMEZONE.localize(datetime(2018, 1, 1, 23, 59, 0)))
     def test_compute_delay_in_the_next_day(self):
-        now = datetime(2018, 1, 1, 23, 59, 0)
-        delay = compute_delay(now, '0h', '05')
+        delay = TheoreticalScheduleResource().compute_delay('0h', '05')
         self.assertEquals(delay, 6)
+
+    @patch.object(LocalTime, 'now', lambda _: pytz.timezone('Europe/London').localize(datetime(2018, 1, 1, 14, 0, 0)))
+    def test_compute_delay_in_other_timezone(self):
+        delay = TheoreticalScheduleResource().compute_delay('15h', '02')
+        self.assertEquals(delay, 62)
 
 
 if __name__ == '__main__':
