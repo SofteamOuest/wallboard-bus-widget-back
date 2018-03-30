@@ -10,4 +10,4 @@ RUN pip install gunicorn
 COPY . .
 
 EXPOSE 5000
-CMD [ "python", "run.py" ]
+CMD [ "gunicorn", "--workers", "4", "--worker-class", "gthread", "--threads", "4", "--bind", "0.0.0.0:5000", "run:app" ]
