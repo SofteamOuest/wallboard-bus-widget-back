@@ -17,3 +17,12 @@ class RemoteApi:
     def build_theoretical_schedule_url(self, bus_line):
         """For instance, http://open.tan.fr/ewp/horairesarret.json/IDNA/4/1"""
         return '{0}/horairesarret.json/{1}/{2}/{3}'.format(self.api, bus_line.stop, bus_line.line, bus_line.direction)
+
+    def fetch_real_time_schedule(self, stop):
+        url = self.build_real_time_schedule_url(stop)
+        r = requests.get(url)
+        return r.json()
+
+    def build_real_time_schedule_url(self, stop):
+        """For instance, http://open.tan.fr/ewp/tempsattente.json/IDNA"""
+        return '{0}/tempsattente.json/{1}'.format(self.api, stop)

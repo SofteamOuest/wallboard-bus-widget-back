@@ -2,7 +2,7 @@ import itertools
 
 
 class BusLine(object):
-    def __init__(self, stop, line, direction):
+    def __init__(self, stop, line=None, direction=None):
         self.stop = stop
         self.line = line
         self.direction = direction

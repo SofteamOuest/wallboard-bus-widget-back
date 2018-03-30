@@ -11,7 +11,7 @@ api = Api(app)
 api.decorators = [cors.crossdomain(origin='*')]
 
 api.add_resource(TheoreticalScheduleResource, '/theoretical')
-api.add_resource(RealTimeScheduleResource, '/real-time')
+api.add_resource(RealTimeScheduleResource, '/real_time')
 
 
 def main():

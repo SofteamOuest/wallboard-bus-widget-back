@@ -1,11 +1,15 @@
 from json import JSONDecodeError
 
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from multiprocessing.dummy import Pool as ThreadPool
 
-from .local_time import LocalTime
-from .remote_api import RemoteApi
-from .bus_line import build_bus_line_combinations, BusLineSchedule
+from requests import RequestException
+
+from widget_bus_back.response_format import to_json_compatible_object
+from widget_bus_back.request_params import parse_bus_line_request_params
+from widget_bus_back.local_time import LocalTime
+from widget_bus_back.remote_api import RemoteApi
+from widget_bus_back.bus_line import build_bus_line_combinations, BusLineSchedule
 
 FETCH_PROCESSES = 4
 
@@ -17,10 +21,10 @@ class TheoreticalScheduleResource(Resource):
         self.current_time = self.local_time.now()
 
     def get(self):
-        request_params = parse_request_params()
+        request_params = parse_bus_line_request_params()
         bus_lines = build_bus_line_combinations(**request_params)
         schedules = self.fetch_schedules(bus_lines)
-        return to_json(schedules)
+        return to_json_compatible_object(schedules)
 
     def fetch_schedules(self, bus_lines):
         pool = ThreadPool(FETCH_PROCESSES)
@@ -33,7 +37,7 @@ class TheoreticalScheduleResource(Resource):
         try:
             remote_schedules = self.remote_api.fetch_theoretical_schedule(bus_line)
             return self.build_theoretical_schedule(bus_line, remote_schedules)
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError, RequestException) as e:
             return BusLineSchedule(bus_line=bus_line, error_message=e.__class__.__name__ + ':' + str(e))
 
     def build_theoretical_schedule(self, bus_line, remote_schedules):
@@ -54,18 +58,6 @@ class TheoreticalScheduleResource(Resource):
             delay_in_seconds += 86400
 
         return delay_in_seconds / 60
-
-
-def parse_request_params():
-    parser = reqparse.RequestParser()
-    parser.add_argument('stop', action='append', required=True)
-    parser.add_argument('line', action='append', required=True)
-    parser.add_argument('direction', action='append', type=int, default=[1, 2], choices=(1, 2))
-    return parser.parse_args()
-
-
-def to_json(obj_list):
-    return list(map(lambda obj: vars(obj), obj_list))
 
 
 def extract_hour(hour_string):

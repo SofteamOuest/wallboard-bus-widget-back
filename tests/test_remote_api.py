@@ -20,6 +20,19 @@ class TestRemoteApi(unittest.TestCase):
         # assert
         self.assertEquals(url, 'http://dummy/horairesarret.json/STOP/LINE/42')
 
+    @patch('os.getenv')
+    def test_build_real_time_schedule_url(self, mock_getenv):
+        # arrange
+        mock_getenv.return_value = 'http://dummy'
+        api = RemoteApi()
+        stop = 'STOP'
+
+        # act
+        url = api.build_real_time_schedule_url(stop)
+
+        # assert
+        self.assertEquals(url, 'http://dummy/tempsattente.json/STOP')
+
 
 if __name__ == '__main__':
     unittest.main()
