@@ -6,7 +6,8 @@ from unittest.mock import patch, call
 import requests
 
 import run
-from widget_bus_back.real_time_schedule import RealTimeScheduleResource
+from widget_bus_back.real_time_schedule import RealTimeScheduleResource, build_real_time_schedule, compute_delay, \
+    build_real_time_schedules
 from widget_bus_back.remote_api import RemoteApi
 
 
@@ -22,7 +23,7 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         response_string = response.get_data().decode(sys.getdefaultencoding())
         self.assertTrue('missing required parameter' in response_string.lower())
 
-    @patch.object(RemoteApi, 'fetch_real_time_schedule', lambda _, __: {})
+    @patch.object(RemoteApi, 'fetch_real_time_schedule', lambda _, __: [])
     def test_get_with_parameters_should_not_return_error(self):
         # act
         response = self.app.get('/real_time?stop=A')
@@ -66,6 +67,66 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         # assert
         self.assertTrue(sch.unavailable)
         self.assertTrue(sch.error_message)
+
+    def test_build_real_time_schedule_with_one_line_should_compute_next_time(self):
+        # arrange
+        stop = 'IDNA'
+        remote_schedule = {
+            "sens": 2,
+            "terminus": "Porte de Vertou",
+            "temps": "5 mn",
+            "ligne": {
+                "numLigne": "4",
+            }
+        }
+
+        # act
+        sch = build_real_time_schedule(stop, remote_schedule)
+
+        # assert
+        self.assertEquals(sch.stop, stop)
+        self.assertEquals(sch.line, "4")
+        self.assertEquals(sch.direction, 2)
+        self.assertEquals(sch.terminus, "Porte de Vertou")
+        self.assertEquals(sch.next, [5])
+
+    def test_build_real_time_schedules_with_two_lines_should_aggregate(self):
+        # arrange
+        stop = 'IDNA'
+        remote_schedules = [{
+            "sens": 2,
+            "terminus": "Porte de Vertou",
+            "temps": "1 mn",
+            "ligne": {
+                "numLigne": "4",
+            }
+        },
+        {
+            "sens": 1,
+            "terminus": "Quai des Antilles",
+            "temps": "1 mn 30",
+            "ligne": {
+                "numLigne": "C5",
+            }
+        }]
+
+        # act
+        sch = build_real_time_schedules(stop, remote_schedules)
+
+        # assert
+        self.assertEquals(len(sch), 2)
+
+        self.assertEquals(sch[0].stop, stop)
+        self.assertEquals(sch[0].line, "4")
+        self.assertEquals(sch[0].direction, 2)
+        self.assertEquals(sch[0].terminus, "Porte de Vertou")
+        self.assertEquals(sch[0].next, [1])
+
+        self.assertEquals(sch[1].stop, stop)
+        self.assertEquals(sch[1].line, "C5")
+        self.assertEquals(sch[1].direction, 1)
+        self.assertEquals(sch[1].terminus, "Quai des Antilles")
+        self.assertEquals(sch[1].next, [1.5])
 
 
 if __name__ == '__main__':
