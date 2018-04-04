@@ -13,9 +13,10 @@ api.decorators = [cors.crossdomain(origin='*')]
 api.add_resource(TheoreticalScheduleResource, '/theoretical')
 api.add_resource(RealTimeScheduleResource, '/real_time')
 
+configure_logging()
+
 
 def main():
-    configure_logging()
     app.run(host='0.0.0.0', debug=True, threaded=True)
 
 
