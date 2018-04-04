@@ -62,11 +62,11 @@ class TheoreticalScheduleResource(Resource):
 
 def extract_hour(hour_string):
     """Returns the value of hour string as an integer
-    >>>hour_string('14h')
+    >>> extract_hour('14h')
     14
-    >>>hour_string('3h')
+    >>> extract_hour('3h')
     3
-    >>>hour_string('10')
+    >>> extract_hour('10')
     10
     """
     return int(hour_string.rstrip('h'))
