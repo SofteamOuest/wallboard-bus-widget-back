@@ -5,7 +5,7 @@ from multiprocessing.pool import ThreadPool
 from flask_restful import Resource
 from requests import RequestException
 
-from widget_bus_back.bus_line import BusLineSchedule, BusLine
+from widget_bus_back.bus_line import BusLineSchedule, BusLine, BusLineScheduleAggregator
 from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.request_params import parse_stop_request_params
 from widget_bus_back.response_format import to_json_compatible_object
@@ -44,8 +44,11 @@ class RealTimeScheduleResource(Resource):
 
 
 def build_real_time_schedules(stop, remote_schedules):
-    schedules = map(lambda x: build_real_time_schedule(stop, x), remote_schedules)
-    return list(schedules)
+    schedules = [build_real_time_schedule(stop, x) for x in remote_schedules]
+    aggregator = BusLineScheduleAggregator()
+    for sch in schedules:
+        aggregator.add(sch)
+    return list(aggregator.values())
 
 
 def build_real_time_schedule(stop, remote_schedule):

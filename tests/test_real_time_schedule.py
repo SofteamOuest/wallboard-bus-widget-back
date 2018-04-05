@@ -1,12 +1,11 @@
-import unittest
-
 import sys
+import unittest
 from unittest.mock import patch, call
 
 import requests
 
 import run
-from widget_bus_back.real_time_schedule import RealTimeScheduleResource, build_real_time_schedule, compute_delay, \
+from widget_bus_back.real_time_schedule import RealTimeScheduleResource, build_real_time_schedule, \
     build_real_time_schedules
 from widget_bus_back.remote_api import RemoteApi
 
@@ -90,25 +89,25 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         self.assertEquals(sch.terminus, "Porte de Vertou")
         self.assertEquals(sch.next, [5])
 
-    def test_build_real_time_schedules_with_two_lines_should_aggregate(self):
+    def test_build_real_time_schedules_with_two_lines_should_concat_results(self):
         # arrange
         stop = 'IDNA'
         remote_schedules = [{
-            "sens": 2,
-            "terminus": "Porte de Vertou",
-            "temps": "1 mn",
-            "ligne": {
-                "numLigne": "4",
-            }
-        },
-        {
-            "sens": 1,
-            "terminus": "Quai des Antilles",
-            "temps": "1 mn 30",
-            "ligne": {
-                "numLigne": "C5",
-            }
-        }]
+                "sens": 2,
+                "terminus": "Porte de Vertou",
+                "temps": "1 mn",
+                "ligne": {
+                    "numLigne": "4",
+                }
+            },
+            {
+                "sens": 1,
+                "terminus": "Quai des Antilles",
+                "temps": "1 mn 30",
+                "ligne": {
+                    "numLigne": "C5",
+                }
+            }]
 
         # act
         sch = build_real_time_schedules(stop, remote_schedules)
@@ -127,6 +126,38 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         self.assertEquals(sch[1].direction, 1)
         self.assertEquals(sch[1].terminus, "Quai des Antilles")
         self.assertEquals(sch[1].next, [1.5])
+
+    def test_build_real_time_schedules_with_one_line_two_schedules_should_aggregate_results(self):
+        # arrange
+        stop = 'IDNA'
+        remote_schedules = [{
+                "sens": 2,
+                "terminus": "Porte de Vertou",
+                "temps": "1 mn",
+                "ligne": {
+                    "numLigne": "4",
+                }
+            },
+            {
+                "sens": 2,
+                "terminus": "Porte de Vertou",
+                "temps": "2 mn 30",
+                "ligne": {
+                    "numLigne": "4",
+                }
+            }]
+
+        # act
+        sch = build_real_time_schedules(stop, remote_schedules)
+
+        # assert
+        self.assertEquals(len(sch), 1)
+
+        self.assertEquals(sch[0].stop, stop)
+        self.assertEquals(sch[0].line, "4")
+        self.assertEquals(sch[0].direction, 2)
+        self.assertEquals(sch[0].terminus, "Porte de Vertou")
+        self.assertEquals(sch[0].next, [1, 2.5])
 
 
 if __name__ == '__main__':

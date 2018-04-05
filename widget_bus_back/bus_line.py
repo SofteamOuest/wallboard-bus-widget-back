@@ -7,6 +7,10 @@ class BusLine(object):
         self.line = line
         self.direction = direction
 
+    @property
+    def key(self):
+        return '{0}-{1}-{2}'.format(self.stop, self.line, self.direction)
+
 
 class BusLineSchedule(BusLine):
     def __init__(self, bus_line, terminus='', next_time=-1, error_message=''):
@@ -23,3 +27,17 @@ def build_bus_line_combinations(stop=(), line=(), direction=()):
     cross_product_combinations = itertools.product(stop, line, direction)
     for cpc in cross_product_combinations:
         yield BusLine(*cpc)
+
+
+class BusLineScheduleAggregator:
+    def __init__(self):
+        self.items = {}
+
+    def add(self, new_schedule):
+        if not(new_schedule.key in self.items):
+            self.items[new_schedule.key] = new_schedule
+        else:
+            self.items[new_schedule.key].next.extend(new_schedule.next)
+
+    def values(self):
+        return self.items.values()
