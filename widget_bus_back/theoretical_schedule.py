@@ -42,9 +42,12 @@ class TheoreticalScheduleResource(Resource):
 
     def build_theoretical_schedule(self, bus_line, remote_schedules):
         terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
-        next_arrival = remote_schedules['prochainsHoraires'][0]
-        delay_to_next_arrival = self.compute_delay(next_arrival['heure'], next_arrival['passages'][0])
-        return BusLineSchedule(bus_line, terminus, delay_to_next_arrival)
+        delays_to_next_arrivals = self.compute_delays_to_next_arrivals(remote_schedules['prochainsHoraires'])
+        return BusLineSchedule(bus_line, terminus, delays_to_next_arrivals)
+
+    def compute_delays_to_next_arrivals(self, next_arrivals):
+        return [self.compute_delay(next_arrival['heure'], next_arrival['passages'][0])
+                for next_arrival in next_arrivals]
 
     def compute_delay(self, next_arrival_hour_string, next_arrival_minute_string):
         next_arrival_hour = extract_hour(next_arrival_hour_string)

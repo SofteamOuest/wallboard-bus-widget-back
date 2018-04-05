@@ -13,7 +13,7 @@ class BusLine(object):
 
 
 class BusLineSchedule(BusLine):
-    def __init__(self, bus_line, terminus='', next_time=-1, error_message=''):
+    def __init__(self, bus_line, terminus='', next_time=(), error_message=''):
         copy_attributes = vars(bus_line)
         super().__init__(**copy_attributes)
         self.terminus = terminus

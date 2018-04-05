@@ -77,7 +77,7 @@ class TestTheoreticalScheduleResource(unittest.TestCase):
         self.assertEquals(sch.stop, bus_line.stop)
         self.assertEquals(sch.direction, bus_line.direction)
         self.assertEquals(sch.terminus, "Foch - Cathédrale")
-        self.assertEquals(sch.next, 18)
+        self.assertEquals(sch.next, [18, 33])
 
     @patch.object(RemoteApi, 'fetch_theoretical_schedule', lambda _, __: {})
     def test_fetch_schedule_when_unavailable_should_return_error(self):
