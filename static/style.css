@@ -104,7 +104,7 @@ header {
     align-items: center;
 }
 h3:before {
-    content: ' \2BC8 '
+    content: '\00A0>\00A0'
 }
 p {
     padding: var(--space-2x) var(--space-1x);
