@@ -7,6 +7,7 @@
     --accent-3: #2274a5;
     --shadow: #247c39;
     --shadow-2: silver;
+    --faded: #e3e3e3;
     --space-1x: 1rem;
     --space-2x: 2rem;
     --space-4x: 4rem;
@@ -32,7 +33,7 @@ main {
     grid-template-rows: [top-part-start] 1fr [first-row] max-content var(--space-2x) [second-row] max-content 1fr ;
     overflow: hidden;
 }
-section {
+article {
     background: var(--foreground);
     color: var(--background);
     box-shadow: 0 3px 3px var(--shadow);
@@ -44,37 +45,37 @@ section {
         from { opacity: .5; }
         to { opacity: 1; }
     }
-    section:nth-of-type(1) {
+    article:nth-of-type(1) {
         grid-row: first-row;
         grid-column: first-col;
     }
-    section:nth-of-type(2) {
+    article:nth-of-type(2) {
         grid-row: second-row;
         grid-column: first-col;
     }
-    section:nth-of-type(3) {
+    article:nth-of-type(3) {
         grid-row: first-row;
         grid-column: second-col;
     }
-    section:nth-of-type(4) {
+    article:nth-of-type(4) {
         grid-row: second-row;
         grid-column: second-col;
     }
-    section:nth-of-type(3), section:nth-of-type(4) {
+    article:nth-of-type(3), article:nth-of-type(4) {
         box-shadow: 0 3px 3px var(--shadow-2);
     }
-    section.loading {
+    article.loading {
         opacity: 0;
         transform: scale(.1, .1);
         animation: appear 300ms ease-in-out 0s 1 normal forwards;
     }
-        section.loading:nth-of-type(2) {
+        article.loading:nth-of-type(2) {
             animation-delay: 100ms;
         }
-        section.loading:nth-of-type(3) {
+        article.loading:nth-of-type(3) {
             animation-delay: 200ms;
         }
-        section.loading:nth-of-type(4) {
+        article.loading:nth-of-type(4) {
             animation-delay: 300ms;
         }
         @keyframes appear {
@@ -106,15 +107,29 @@ header {
 h3:before {
     content: '\00A0>\00A0'
 }
-p {
+section {
     padding: var(--space-2x) var(--space-1x);
 }
-    .soon p {
+    .soon section {
         border-bottom: solid 5px var(--accent-1);
-        color: var(--accent-1);
-        font-size: larger;
     }
-    .soon.imminent p {
+        .soon section p:first-of-type {
+            color: var(--accent-1);
+            font-size: larger;
+        }
+    .soon.imminent section {
         border-bottom-color: var(--accent-2);
-        color: var(--accent-2);
+        }
+        .soon.imminent section p:first-of-type {
+            color: var(--accent-2);
+        }
+p {
+    display: inline-block;
+}
+    p+p {
+        color: var(--shadow-2);
     }
+        p+p:before {
+            content: '\00A0\2022\00A0';
+            color: var(--faded);
+        }

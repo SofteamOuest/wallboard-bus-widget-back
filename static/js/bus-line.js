@@ -6,7 +6,7 @@ export default class BusLine
         this.terminus = '...'
         this.nextArrivals = []
         this.unavailable = false
-        this.isRealTime = false
+        this.realTime = false
     }
 
     get id() {
@@ -14,8 +14,20 @@ export default class BusLine
     }
 
     get earliestArrival() {
-        if (this.nextArrivals.length == 0) return -1;
+        if (this.nextArrivals.length == 0) return -1
         return Math.min(...this.nextArrivals)
+    }
+
+    get soon() {
+        return 0 <= this.earliestArrival && this.earliestArrival <= 3
+    }
+
+    get imminent() {
+        return 0 <= this.earliestArrival && this.earliestArrival <= 1
+    }
+
+    get loading() {
+        return this.earliestArrival < 0 && !this.unavailable
     }
 
     isSameAs(other) {
@@ -35,7 +47,7 @@ export default class BusLine
     }
 
     markAsRealTime() {
-        this.isRealTime = true
+        this.realTime = true
         return this
     }
 }

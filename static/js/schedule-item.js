@@ -1,30 +1,31 @@
+import ScheduleItemTime from './schedule-item-time.js'
+
 export default {
     ScheduleItem: Vue.component('schedule-item', {
         props: ['busLine'],
         template:
-            `<section :class="classObject">
+            `<article :class="classObject">
                 <header>
                     <h2>{{busLine.line}}</h2>
                     <h3>{{busLine.terminus}}</h3>
                 </header>
-                <p>{{nextScheduleFormatted}}</p>
-            </section>`,
+                <section>
+                    <schedule-item-time
+                        v-for="arrival in busLine.nextArrivals.slice(0, 3)"
+                        :arrival="arrival">
+                    </schedule-item-time>
+                    <span v-if="busLine.unavailable">&#x2620;&#xFE0F;</span>
+                </section>
+            </article>`,
         computed: {
             classObject() {
                 return {
-                    soon: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 3,
-                    imminent: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 1,
+                    soon: this.busLine.soon,
+                    imminent: this.busLine.imminent,
                     unavailable: this.busLine.unavailable,
-                    loading: this.busLine.earliestArrival < 0 && !this.busLine.unavailable,
-                    'real-time': this.busLine.isRealTime
+                    loading: this.busLine.loading,
+                    'real-time': this.busLine.realTime
                 }
-            },
-            nextScheduleFormatted() {
-                if (this.busLine.earliestArrival < 0)
-                    return '...'
-                if (this.busLine.earliestArrival < 1)
-                    return '<1 min'
-                return `${Math.floor(this.busLine.earliestArrival)} min`
             }
         }
     })
