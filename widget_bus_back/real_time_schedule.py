@@ -41,7 +41,7 @@ class RealTimeScheduleResource(Resource):
             remote_schedules = self.remote_api.fetch_real_time_schedule(stop)
             return build_real_time_schedules(stop, remote_schedules)
         except (KeyError, JSONDecodeError, RequestException) as e:
-            return BusLineSchedule(bus_line=BusLine(stop), error_message=e.__class__.__name__ + ':' + str(e))
+            return [BusLineSchedule(bus_line=BusLine(stop), error_message=e.__class__.__name__ + ':' + str(e))]
 
 
 def build_real_time_schedules(stop, remote_schedules):

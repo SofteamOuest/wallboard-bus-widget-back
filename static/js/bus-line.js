@@ -5,6 +5,7 @@ export default class BusLine
         this.direction = direction
         this.terminus = '...'
         this.nextArrivals = []
+        this.unavailable = false
         this.isRealTime = false
     }
 
@@ -24,8 +25,11 @@ export default class BusLine
 
     updateWith(schedule) {
         if (!this.isRealTime) { // real-time schedules are immutable
-            this.terminus = schedule.terminus
-            this.nextArrivals = schedule.next_arrivals
+            this.unavailable = schedule.unavailable
+            if (!schedule.unavailable) {
+                this.terminus = schedule.terminus
+                this.nextArrivals = schedule.next_arrivals
+            }
         }
         return this
     }

@@ -1,8 +1,9 @@
 function getSchedule(endPoint) {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve, reject) => {
             fetch(endPoint)
                 .then(response => response.json())
                 .then(response => resolve(response))
+                .catch(error => reject(error))
         })
 }
 

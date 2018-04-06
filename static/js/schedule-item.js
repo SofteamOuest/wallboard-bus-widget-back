@@ -15,7 +15,7 @@ export default {
                     soon: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 3,
                     imminent: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 1,
                     unavailable: this.busLine.unavailable,
-                    loading: this.busLine.earliestArrival < 0,
+                    loading: this.busLine.earliestArrival < 0 && !this.busLine.unavailable,
                     'real-time': this.busLine.isRealTime
                 }
             },
