@@ -46,19 +46,26 @@ To set the variables before calling the script:
 WIDGET_BUS_LOG_LEVEL=DEBUG python run.py
 ----
 
-Or with docker
+Or with docker:
 [source]
 ----
 docker run -e "WIDGET_BUS_LOG_LEVEL=DEBUG" ✂
     -p 5000:5000 -it --rm wallboard-tan-back
 ----
 
-=== Notes on running dev server under Windows
+== Unit testing
+
+[source]
+----
+python -m unittest
+----
+
+== Notes on running dev server under Windows
 
 I ran across some issues, using the built-in dev server
 (werkzeug) under Windows:
 
-* Javascript files are served with `text/plain` mime type,
+* ECMAScript files are served with `text/plain` mime type,
 which causes some browsers to reject them
 ** You have to update the `HKEY_CLASSES_ROOT\.js\Content-Type`
 registry entry to `text/javascript`
@@ -69,7 +76,7 @@ for `localhost` :(
 ** Or access the server with `127.0.0.1`
 * Threading *has* to be enabled (`threaded=True` in `app.run`)
 
-You do not have those issues with Docker.
+You may not have those issues with Docker.
 
 == Example API requests
 
@@ -91,14 +98,14 @@ Returns
     direction: 1,
     terminus: "Foch Cathétrale",
     line: "4",
-    next: 1.5
+    next_arrivals: [1.5, 3]
 },
 {
     stop: "IDNA",
     direction: 2,
     terminus: "Porte de Vertou",
     line: "4",
-    next: 6
+    next_arrivals: [6, 8, 12]
 }, ... ]
 ----
 

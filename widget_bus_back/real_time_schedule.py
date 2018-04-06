@@ -9,6 +9,7 @@ from widget_bus_back.bus_line import BusLineSchedule, BusLine, BusLineScheduleAg
 from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.request_params import parse_stop_request_params
 from widget_bus_back.response_format import to_json_compatible_object
+from widget_bus_back.time_string import extract_delay
 
 FETCH_PROCESSES = 4
 
@@ -55,36 +56,6 @@ def build_real_time_schedule(stop, remote_schedule):
     line = remote_schedule['ligne']['numLigne']
     direction = remote_schedule['sens']
     terminus = remote_schedule['terminus']
-    next = compute_delay(remote_schedule['temps'])
+    next_arrival = extract_delay(remote_schedule['temps'])
     bus_line = BusLine(stop, line, direction)
-    return BusLineSchedule(bus_line, terminus, [next])
-
-
-def compute_delay(next_arrival_minute_string):
-    """Returns the value of delay string as an float
-    >>> compute_delay('1 mn')
-    1.0
-    >>> compute_delay('5 mn')
-    5.0
-    >>> compute_delay('22 mn')
-    22.0
-    >>> compute_delay('1 mn 30')
-    1.5
-    >>> compute_delay('Proche')
-    0.0
-    >>> compute_delay('horaire.proche')
-    0.0
-    """
-    if "proche" in next_arrival_minute_string.lower():
-        return 0.0
-
-    parts = split_next_arrival_minute_string(next_arrival_minute_string)
-    return sum([value / (60 ** index) for index, value in enumerate(parts)])
-
-
-def split_next_arrival_minute_string(next_arrival_minute_string):
-    parts = next_arrival_minute_string.split('mn')
-    for p in parts:
-        part = p.strip()
-        if len(part):
-            yield int(part)
+    return BusLineSchedule(bus_line, terminus, [next_arrival])

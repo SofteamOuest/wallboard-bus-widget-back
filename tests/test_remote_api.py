@@ -18,7 +18,7 @@ class TestRemoteApi(unittest.TestCase):
         url = api.build_theoretical_schedule_url(bus_line)
 
         # assert
-        self.assertEquals(url, 'http://dummy/horairesarret.json/STOP/LINE/42')
+        self.assertEqual(url, 'http://dummy/horairesarret.json/STOP/LINE/42')
 
     @patch('os.getenv')
     def test_build_real_time_schedule_url(self, mock_getenv):
@@ -31,7 +31,7 @@ class TestRemoteApi(unittest.TestCase):
         url = api.build_real_time_schedule_url(stop)
 
         # assert
-        self.assertEquals(url, 'http://dummy/tempsattente.json/STOP')
+        self.assertEqual(url, 'http://dummy/tempsattente.json/STOP')
 
 
 if __name__ == '__main__':

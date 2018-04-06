@@ -13,11 +13,11 @@ class BusLine(object):
 
 
 class BusLineSchedule(BusLine):
-    def __init__(self, bus_line, terminus='', next_time=(), error_message=''):
+    def __init__(self, bus_line, terminus='', next_arrivals=(), error_message=''):
         copy_attributes = vars(bus_line)
         super().__init__(**copy_attributes)
         self.terminus = terminus
-        self.next = next_time
+        self.next_arrivals = next_arrivals
         if error_message:
             self.error_message = error_message
             self.unavailable = True
@@ -37,7 +37,7 @@ class BusLineScheduleAggregator:
         if not(new_schedule.key in self.items):
             self.items[new_schedule.key] = new_schedule
         else:
-            self.items[new_schedule.key].next.extend(new_schedule.next)
+            self.items[new_schedule.key].next_arrivals.extend(new_schedule.next_arrivals)
 
     def values(self):
         return self.items.values()

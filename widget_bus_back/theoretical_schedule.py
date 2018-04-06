@@ -7,9 +7,10 @@ from requests import RequestException
 
 from widget_bus_back.response_format import to_json_compatible_object
 from widget_bus_back.request_params import parse_bus_line_request_params
-from widget_bus_back.local_time import LocalTime
+from widget_bus_back.date_time_localization import DateTimeLocalization
 from widget_bus_back.remote_api import RemoteApi
 from widget_bus_back.bus_line import build_bus_line_combinations, BusLineSchedule
+from widget_bus_back.time_string import extract_hour
 
 FETCH_PROCESSES = 4
 
@@ -17,8 +18,8 @@ FETCH_PROCESSES = 4
 class TheoreticalScheduleResource(Resource):
     def __init__(self):
         self.remote_api = RemoteApi()
-        self.local_time = LocalTime()
-        self.current_time = self.local_time.now()
+        self.date_time_localization = DateTimeLocalization()
+        self.current_time = self.date_time_localization.now()
 
     def get(self):
         request_params = parse_bus_line_request_params()
@@ -42,8 +43,8 @@ class TheoreticalScheduleResource(Resource):
 
     def build_theoretical_schedule(self, bus_line, remote_schedules):
         terminus = remote_schedules['ligne']['directionSens' + str(bus_line.direction)]
-        delays_to_next_arrivals = self.compute_delays_to_next_arrivals(remote_schedules['prochainsHoraires'])
-        return BusLineSchedule(bus_line, terminus, delays_to_next_arrivals)
+        next_arrivals = self.compute_delays_to_next_arrivals(remote_schedules['prochainsHoraires'])
+        return BusLineSchedule(bus_line, terminus, next_arrivals)
 
     def compute_delays_to_next_arrivals(self, next_arrivals):
         return [self.compute_delay(next_arrival['heure'], next_arrival['passages'][0])
@@ -53,7 +54,7 @@ class TheoreticalScheduleResource(Resource):
         next_arrival_hour = extract_hour(next_arrival_hour_string)
         next_arrival_minute = int(next_arrival_minute_string)
         next_arrival = self.current_time.replace(hour=next_arrival_hour, minute=next_arrival_minute, second=0)
-        self.local_time.localize(next_arrival)
+        self.date_time_localization.localize(next_arrival)
 
         delay = next_arrival - self.current_time
         delay_in_seconds = delay.days * 86400 + delay.seconds
@@ -61,16 +62,3 @@ class TheoreticalScheduleResource(Resource):
             delay_in_seconds += 86400
 
         return delay_in_seconds / 60
-
-
-def extract_hour(hour_string):
-    """Returns the value of hour string as an integer
-    >>> extract_hour('14h')
-    14
-    >>> extract_hour('3h')
-    3
-    >>> extract_hour('10')
-    10
-    """
-    return int(hour_string.rstrip('h'))
-

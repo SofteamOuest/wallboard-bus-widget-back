@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 
-class LocalTime:
+class DateTimeLocalization:
     def __init__(self):
         self.timezone = pytz.timezone('Europe/Paris')
 

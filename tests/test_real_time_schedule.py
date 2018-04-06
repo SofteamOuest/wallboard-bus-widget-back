@@ -83,11 +83,11 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         sch = build_real_time_schedule(stop, remote_schedule)
 
         # assert
-        self.assertEquals(sch.stop, stop)
-        self.assertEquals(sch.line, "4")
-        self.assertEquals(sch.direction, 2)
-        self.assertEquals(sch.terminus, "Porte de Vertou")
-        self.assertEquals(sch.next, [5])
+        self.assertEqual(sch.stop, stop)
+        self.assertEqual(sch.line, "4")
+        self.assertEqual(sch.direction, 2)
+        self.assertEqual(sch.terminus, "Porte de Vertou")
+        self.assertEqual(sch.next_arrivals, [5])
 
     def test_build_real_time_schedules_with_two_lines_should_concat_results(self):
         # arrange
@@ -113,19 +113,19 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         sch = build_real_time_schedules(stop, remote_schedules)
 
         # assert
-        self.assertEquals(len(sch), 2)
+        self.assertEqual(len(sch), 2)
 
-        self.assertEquals(sch[0].stop, stop)
-        self.assertEquals(sch[0].line, "4")
-        self.assertEquals(sch[0].direction, 2)
-        self.assertEquals(sch[0].terminus, "Porte de Vertou")
-        self.assertEquals(sch[0].next, [1])
+        self.assertEqual(sch[0].stop, stop)
+        self.assertEqual(sch[0].line, "4")
+        self.assertEqual(sch[0].direction, 2)
+        self.assertEqual(sch[0].terminus, "Porte de Vertou")
+        self.assertEqual(sch[0].next_arrivals, [1])
 
-        self.assertEquals(sch[1].stop, stop)
-        self.assertEquals(sch[1].line, "C5")
-        self.assertEquals(sch[1].direction, 1)
-        self.assertEquals(sch[1].terminus, "Quai des Antilles")
-        self.assertEquals(sch[1].next, [1.5])
+        self.assertEqual(sch[1].stop, stop)
+        self.assertEqual(sch[1].line, "C5")
+        self.assertEqual(sch[1].direction, 1)
+        self.assertEqual(sch[1].terminus, "Quai des Antilles")
+        self.assertEqual(sch[1].next_arrivals, [1.5])
 
     def test_build_real_time_schedules_with_one_line_two_schedules_should_aggregate_results(self):
         # arrange
@@ -151,13 +151,13 @@ class TestRealTimeScheduleResource(unittest.TestCase):
         sch = build_real_time_schedules(stop, remote_schedules)
 
         # assert
-        self.assertEquals(len(sch), 1)
+        self.assertEqual(len(sch), 1)
 
-        self.assertEquals(sch[0].stop, stop)
-        self.assertEquals(sch[0].line, "4")
-        self.assertEquals(sch[0].direction, 2)
-        self.assertEquals(sch[0].terminus, "Porte de Vertou")
-        self.assertEquals(sch[0].next, [1, 2.5])
+        self.assertEqual(sch[0].stop, stop)
+        self.assertEqual(sch[0].line, "4")
+        self.assertEqual(sch[0].direction, 2)
+        self.assertEqual(sch[0].terminus, "Porte de Vertou")
+        self.assertEqual(sch[0].next_arrivals, [1, 2.5])
 
 
 if __name__ == '__main__':
