@@ -12,19 +12,19 @@ export default {
         computed: {
             classObject() {
                 return {
-                    soon: 0 <= this.busLine.inbound && this.busLine.inbound <= 3,
-                    imminent: 0 <= this.busLine.inbound && this.busLine.inbound <= 1,
+                    soon: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 3,
+                    imminent: 0 <= this.busLine.earliestArrival && this.busLine.earliestArrival <= 1,
                     unavailable: this.busLine.unavailable,
-                    loading: this.busLine.inbound < 0,
+                    loading: this.busLine.earliestArrival < 0,
                     'real-time': this.busLine.isRealTime
                 }
             },
             nextScheduleFormatted() {
-                if (this.busLine.inbound < 0)
+                if (this.busLine.earliestArrival < 0)
                     return '...'
-                if (this.busLine.inbound < 1)
+                if (this.busLine.earliestArrival < 1)
                     return '<1 min'
-                return `${Math.floor(this.busLine.inbound)} min`
+                return `${Math.floor(this.busLine.earliestArrival)} min`
             }
         }
     })

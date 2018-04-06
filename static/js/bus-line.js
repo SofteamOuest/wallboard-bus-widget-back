@@ -4,7 +4,7 @@ export default class BusLine
         this.line = line
         this.direction = direction
         this.terminus = '...'
-        this.next_arrivals = []
+        this.nextArrivals = []
         this.isRealTime = false
     }
 
@@ -12,9 +12,9 @@ export default class BusLine
         return this.line + this.direction
     }
 
-    get inbound() {
-        if (this.next_arrivals.length == 0) return -1;
-        return Math.min(...this.next_arrivals)
+    get earliestArrival() {
+        if (this.nextArrivals.length == 0) return -1;
+        return Math.min(...this.nextArrivals)
     }
 
     isSameAs(other) {
@@ -25,7 +25,7 @@ export default class BusLine
     updateWith(schedule) {
         if (!this.isRealTime) { // real-time schedules are immutable
             this.terminus = schedule.terminus
-            this.next_arrivals = schedule.next_arrivals
+            this.nextArrivals = schedule.next_arrivals
         }
         return this
     }
