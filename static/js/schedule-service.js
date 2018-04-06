@@ -1,10 +1,19 @@
-function getSchedule(busLines) {
+function getSchedule(endPoint) {
     return new Promise((resolve, _) => {
-            let endPoint = getTheoreticalScheduleEndpoint(busLines)
             fetch(endPoint)
                 .then(response => response.json())
                 .then(response => resolve(response))
         })
+}
+
+function getTheoreticalSchedule(busLines) {
+    let endPoint = getTheoreticalScheduleEndpoint(busLines)
+    return getSchedule(endPoint)
+}
+
+function getRealTimeSchedule(busLines) {
+    let endPoint = getRealTimeScheduleEndpoint()
+    return getSchedule(endPoint)
 }
 
 const STOP = 'IDNA'
@@ -18,6 +27,11 @@ function getTheoreticalScheduleEndpoint(busLines) {
     return `${API}/theoretical?stop=${STOP}&${q}`
 }
 
+function getRealTimeScheduleEndpoint() {
+    return `${API}/real_time?stop=${STOP}`
+}
+
 export default { 
-    getSchedule
+    getTheoreticalSchedule,
+    getRealTimeSchedule
 }

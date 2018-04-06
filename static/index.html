@@ -16,11 +16,13 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
     <script type="module">
+        'use strict'
+
         import ScheduleItem from './js/schedule-item.js'
         import BusLine from './js/bus-line.js'
         import scheduleService from './js/schedule-service.js'
 
-        var app = new Vue({
+        let app = new Vue({
             el: '#app',
             data: {
                 busLines: 
@@ -33,11 +35,17 @@
                     .map(lineAndDirection => new BusLine(...lineAndDirection))
             },
             mounted() {
-                scheduleService.getSchedule(this.busLines)
+                scheduleService.getTheoreticalSchedule(this.busLines)
                     .then(schedules => schedules.forEach(
                                         s => this.busLines
-                                            .filter(b => b.sameAs(s))
+                                            .filter(b => b.isSameAs(s))
                                             .forEach(b => b.updateWith(s))))
+
+                scheduleService.getRealTimeSchedule(this.busLines)
+                    .then(schedules => schedules.forEach(
+                                        s => this.busLines
+                                            .filter(b => b.isSameAs(s))
+                                            .forEach(b => b.updateWith(s).markAsRealTime())))
             }
         })
     </script>
